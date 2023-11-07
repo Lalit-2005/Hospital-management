@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Management System - Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .registration-container, .registered-patients {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            background-color: #003d80;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        .patient {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <h2>Patient Registration</h2>
+        <form id="registration-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required><br>
+
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required><br>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    
+    <div class="registered-patients">
+        <h2>Registered Patients</h2>
+        <ul id="patient-list"></ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const registrationForm = document.getElementById("registration-form");
+            const patientList = document.getElementById("patient-list");
+            const registeredPatients = [];
+
+            function displayPatients() {
+                patientList.innerHTML = "";
+                registeredPatients.forEach((patient, index) => {
+                    const li = document.createElement("li");
+                    li.className = "patient";
+                    li.textContent = `Patient #${index + 1}: Name: ${patient.name}, Age: ${patient.age}, Sex: ${patient.sex}, Address: ${patient.address}`;
+                    patientList.appendChild(li);
+                });
+            }
+
+            function isPatientNameExists(name) {
+                return registeredPatients.some(patient => patient.name.toLowerCase() === name.toLowerCase());
+            }
+
+            registrationForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const name = document.getElementById("name").value;
+                const age = document.getElementById("age").value;
+                const sex = document.getElementById("sex").value;
+                const address = document.getElementById("address").value;
+
+                if (isPatientNameExists(name)) {
+                    alert("A patient with the same name already exists.");
+                    return;
+                }
+
+                const patient = {
+                    name,
+                    age,
+                    sex,
+                    address,
+                };
+
+                registeredPatients.push(patient);
+
+                registrationForm.reset();
+
+                displayPatients();
+            });
+        });
+    </script>
+</body>
+</html>
